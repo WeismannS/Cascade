@@ -21,10 +21,10 @@ export class WalSQLSerializer {
     }
 
     /**
-     * Escapes an identifier (table/column name)
+     * Escapes an identifier (table/column name) - always quotes for safety
      */
     private static escapeIdentifier(name: string): string {
-        return name;
+        return `"${name.replace(/"/g, '""')}"`;
     }
 
     /**
@@ -141,7 +141,9 @@ export class WalSQLSerializer {
 
         return statements;
     }
-
+    /**
+     * Turn an event log from wal2json to an SQL statement
+     */
     public static transactionToSQLScript(message: Wal2Json.Output): string {
         return WalSQLSerializer.transactionToSQL(message).join('\n');
     }
