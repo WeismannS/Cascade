@@ -80,7 +80,7 @@ export class WalSQLSerializer {
             whereClause = ` WHERE ${conditions}`;
         }
 
-        return `UPDATE ${table} SET ${setClauses}${whereClause}`;
+        return `UPDATE ${table} SET ${setClauses}${whereClause};`;
     }
 
     /**
@@ -101,7 +101,7 @@ export class WalSQLSerializer {
             whereClause = ` WHERE ${conditions}`;
         }
 
-        return `DELETE FROM ${table}${whereClause}`;
+        return `DELETE FROM ${table}${whereClause};`;
     }
 
     /**
