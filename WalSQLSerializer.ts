@@ -126,19 +126,12 @@ export class WalSQLSerializer {
      */
     public static transactionToSQL(message: Wal2Json.Output): string[] {
         const statements: string[] = [];
-
-        if (message.change.length > 1) {
+        if (message.change.length > 1)
             statements.push('BEGIN;');
-        }
-
-        for (const change of message.change) {
+        for (const change of message.change)
             statements.push(WalSQLSerializer.changeToSQL(change));
-        }
-
-        if (message.change.length > 1) {
+        if (message.change.length > 1)
             statements.push('COMMIT;');
-        }
-
         return statements;
     }
     /**
