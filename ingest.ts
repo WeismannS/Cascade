@@ -19,7 +19,7 @@ const plugin = new Wal2JsonPlugin({
 const service = new LogicalReplicationService({
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
+    port: Number(process.env.DB_PORT!),
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
 }, {
