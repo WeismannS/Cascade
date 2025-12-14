@@ -4,4 +4,4 @@ global:
 scrape_configs:
   - job_name: 'shardrouter'
     static_configs:
-      - targets: ['localhost:9464']
+      - targets: ['cdc:9464', "shard1-router:9464"]

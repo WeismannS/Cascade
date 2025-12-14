@@ -11,15 +11,13 @@
   },
   "dependencies": {
     "@opentelemetry/api": "^1.9.0",
-    "@opentelemetry/auto-instrumentations-node": "^0.67.2",
     "@opentelemetry/exporter-metrics-otlp-http": "^0.208.0",
     "@opentelemetry/exporter-prometheus": "^0.208.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.208.0",
-    "@opentelemetry/instrumentation-kafkajs": "^0.18.0",
+    "@opentelemetry/host-metrics": "^0.37.0",
     "@opentelemetry/sdk-node": "^0.208.0",
     "dotenv": "^17.2.3",
     "kafkajs": "^2.2.4",
-    "kysely": "^0.28.9",
     "pg": "^8.16.3",
     "pg-logical-replication": "^2.3.0"
   }

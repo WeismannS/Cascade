@@ -1,16 +1,19 @@
+import "./instrumentation.ts"
 import { Wal2JsonPlugin, LogicalReplicationService, type Wal2Json } from "pg-logical-replication"
 import { WalSQLSerializer } from "./WalSQLSerializer"
 import { Kafka } from 'kafkajs'
-import { initTracer,tracer } from "../instrumentation.ts"
+import { propagation, context, trace, metrics } from "@opentelemetry/api"
 import "dotenv/config"
 
-initTracer("CDC")
-
+const tracer = trace.getTracer("cdc-kafka")
+const meter = metrics.getMeter("cdc-kafka")
+const logsProcessedCounter = meter.createCounter("wal-logs.processed", {
+    description: "WAL logs processed from Postgres"
+})
 const kafka = new Kafka({
     clientId: "serializer",
     brokers: [`${process.env.BROKER_URL ?? "localhost:9092"}`],
 })
-
 const producer = kafka.producer({
     idempotent: true,
 })
@@ -30,21 +33,30 @@ const service = new LogicalReplicationService({
 })
 
 service.on("data", async (lsn: string, log: Wal2Json.Output) => {
-    const sql = WalSQLSerializer.transactionToSQLScript(log);
-    if (log.change.length)
-        return
-    
-    try {
-        await producer.send({
-            topic: "sql-topic",
-            messages: [{ value: sql }]
-        });
-        console.log(`[${lsn}] Replicated transaction with ${log.change.length} changes.`);
-    } catch (e) {
-        console.error(`[${lsn}] Failed to send to Kafka, stopping replication:`, e);
-        await service.stop();
-        process.exit(1);
-    }
+    if (!log.change.length)
+            return
+    logsProcessedCounter.add(1)
+    await tracer.startActiveSpan("data.pipeline", async (span) => {
+        span.setAttribute("lsn", lsn)
+        const sql = WalSQLSerializer.transactionToSQLScript(log);
+        const headers = {}
+        propagation.inject(context.active(), headers)
+        console.log(headers)
+        try {
+            await producer.send({
+                topic: "sql-topic",
+                messages: [{ value: sql, headers}]
+            });
+            console.log(`[${lsn}] Replicated transaction with ${log.change.length} changes.`);
+        } catch (e) {
+            console.error(`[${lsn}] Failed to send to Kafka, stopping replication:`, e);
+            await service.stop();
+            process.exit(1);
+        }
+        finally {
+            span.end()
+        }
+    })
 })
 
 await producer.connect()
