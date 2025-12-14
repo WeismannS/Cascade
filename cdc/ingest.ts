@@ -1,7 +1,10 @@
 import { Wal2JsonPlugin, LogicalReplicationService, type Wal2Json } from "pg-logical-replication"
 import { WalSQLSerializer } from "./WalSQLSerializer"
 import { Kafka } from 'kafkajs'
+import { initTracer,tracer } from "../instrumentation.ts"
 import "dotenv/config"
+
+initTracer("CDC")
 
 const kafka = new Kafka({
     clientId: "serializer",
@@ -28,6 +31,9 @@ const service = new LogicalReplicationService({
 
 service.on("data", async (lsn: string, log: Wal2Json.Output) => {
     const sql = WalSQLSerializer.transactionToSQLScript(log);
+    if (log.change.length)
+        return
+    
     try {
         await producer.send({
             topic: "sql-topic",

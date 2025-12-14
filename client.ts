@@ -42,7 +42,7 @@ async function initConsumer(kafka: Kafka, shardId: string) {
 
 
 const shardId = commandLineArgs(process.argv)
-initTracer(shardId)
+initTracer(`sql-shard-${shardId}`)
 console.log(`Starting SQL executor for shard ID: ${shardId}`)
 const consumer = await initConsumer(new Kafka({
     clientId: "sql-executor",

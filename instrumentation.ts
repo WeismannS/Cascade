@@ -5,30 +5,33 @@ import {OTLPTraceExporter} from "@opentelemetry/exporter-trace-otlp-http"
 import {OTLPMetricExporter} from "@opentelemetry/exporter-metrics-otlp-http"
 import { resourceFromAttributes } from "@opentelemetry/resources"
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions"
-
+import { PrometheusExporter } from "@opentelemetry/exporter-prometheus"
 let tracer: ReturnType<typeof trace.getTracer>
-
-export function initTracer(shardId: string) {
+let metric : ReturnType<typeof metrics.getMeter>
+export function initTracer(service_name: string) {
     const resource = resourceFromAttributes({
-        [ATTR_SERVICE_NAME]: `sql-shard-${shardId}`,
+        [ATTR_SERVICE_NAME]: service_name,
     })
 
     const provider = new NodeTracerProvider({
         resource,
-        spanProcessors: [new SimpleSpanProcessor(new OTLPTraceExporter())],
+        spanProcessors: [new SimpleSpanProcessor(new OTLPTraceExporter({
+            url : "http://localhost:4318/v1/traces",
+
+        }))],
     })
     provider.register()
 
     const meterProvider = new MeterProvider({
         resource,
-        readers: [new PeriodicExportingMetricReader({
-            exporter: new OTLPMetricExporter(),
-            exportIntervalMillis: 10000,
+        readers: [new PrometheusExporter({
+            
         })],
     })
     metrics.setGlobalMeterProvider(meterProvider)
 
-    const meter = metrics.getMeter(`sql-shard-${shardId}`)
+    const meter = metrics.getMeter(service_name)
+    metric = meter
     meter.createObservableGauge("process.memory.heap_used", {
         description: "Heap memory used in bytes",
         unit: "bytes",
@@ -60,9 +63,9 @@ export function initTracer(shardId: string) {
         lastTime = currentTime
     })
 
-    tracer = trace.getTracer(`sql-shard-${shardId}`)
-    console.log(`OpenTelemetry instrumentation started for sql-shard-${shardId}`)
+    tracer = trace.getTracer(service_name)
+    console.log(`OpenTelemetry instrumentation started for service_name`)
 }
 
-export { tracer }
+export { tracer, metrics }
 

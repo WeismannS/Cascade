@@ -1,0 +1,6 @@
+name: cdc-shardrouter
+
+services:  
+    CDC : 
+      volumes :
+        - ./ingest.ts
