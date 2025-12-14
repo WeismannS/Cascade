@@ -34,18 +34,18 @@ const service = new LogicalReplicationService({
 
 service.on("data", async (lsn: string, log: Wal2Json.Output) => {
     if (!log.change.length)
-            return
+        return
     logsProcessedCounter.add(1)
     await tracer.startActiveSpan("data.pipeline", async (span) => {
         span.setAttribute("lsn", lsn)
-        const sql = WalSQLSerializer.transactionToSQLScript(log);
+        const sqlStatements = WalSQLSerializer.transactionToSQL(log);
         const headers = {}
         propagation.inject(context.active(), headers)
         console.log(headers)
         try {
             await producer.send({
                 topic: "sql-topic",
-                messages: [{ value: sql, headers}]
+                messages: [{ value: JSON.stringify(sqlStatements), headers }]
             });
             console.log(`[${lsn}] Replicated transaction with ${log.change.length} changes.`);
         } catch (e) {
