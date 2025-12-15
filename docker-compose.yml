@@ -2,7 +2,9 @@ name: cdc-shardrouter
 
 services:  
     cdc : 
-      build: ./cdc/
+      build:
+        context: .
+        dockerfile: cdc/Dockerfile
       container_name: cdc
       networks :
         - telemetry
@@ -76,7 +78,9 @@ services:
       command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
     
     shard1-router :
-      build: ./shard-router/
+      build:
+        context: .
+        dockerfile: shard-router/Dockerfile
       container_name : shard1-router
       networks :
         - telemetry

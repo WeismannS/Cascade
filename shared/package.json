@@ -1,0 +1,25 @@
+{
+  "name": "@shardrouter/shared",
+  "version": "1.0.0",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./index.ts",
+    "./instrumentation": "./instrumentation.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/exporter-metrics-otlp-http": "^0.208.0",
+    "@opentelemetry/exporter-prometheus": "^0.208.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.208.0",
+    "@opentelemetry/host-metrics": "^0.37.0",
+    "@opentelemetry/sdk-node": "^0.208.0"
+  }
+}

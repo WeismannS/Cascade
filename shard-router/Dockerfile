@@ -1,8 +1,15 @@
 FROM oven/bun:latest
 
-COPY . ./
+WORKDIR /app
 
+COPY shared ./shared
+WORKDIR /app/shared
 RUN bun install
+
+WORKDIR /app/shard-router
+COPY shard-router/package.json shard-router/bun.lock ./
+RUN bun install
+COPY shard-router .
 
 ENV SHARD_ID=0
 

@@ -1,9 +1,14 @@
 FROM oven/bun:latest
 
-COPY package.json ./
-COPY bun.lock ./
-COPY . ./
+WORKDIR /app
 
+COPY shared ./shared
+WORKDIR /app/shared
 RUN bun install
 
-CMD ["bun","run","ingest.ts"]
+WORKDIR /app/cdc
+COPY cdc/package.json cdc/bun.lock ./
+RUN bun install
+COPY cdc .
+
+CMD ["bun", "run", "ingest.ts"]
