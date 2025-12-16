@@ -7,7 +7,7 @@
 [![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![OpenTelemetry](https://img.shields.io/badge/OpenTelemetry-000000?logo=opentelemetry&logoColor=white)](https://opentelemetry.io/)
 
-Cascade is a CDC (Change Data Capture) pipeline that replicates PostgreSQL changes using Postgres WAL to construct SQL statements to read replicas via Kafka events stream.
+Cascade is a CDC (Change Data Capture) pipeline that replicates PostgreSQL changes using Postgres WAL to construct SQL statements to read replicas via Kafka events stream which can be easily extended to implement sharding logic.
 
 ## Architecture
 
