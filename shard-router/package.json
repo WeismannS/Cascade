@@ -10,7 +10,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@shardrouter/shared": "file:../shared",
+    "@cascade/shared": "file:../shared",
     "@opentelemetry/api": "^1.9.0",
     "dotenv": "^17.2.3",
     "kafkajs": "^2.2.4"

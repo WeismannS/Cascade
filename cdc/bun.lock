@@ -5,8 +5,8 @@
     "": {
       "name": "shardrouter",
       "dependencies": {
+        "@cascade/shared": "file:../shared",
         "@opentelemetry/api": "^1.9.0",
-        "@shardrouter/shared": "file:../shared",
         "dotenv": "^17.2.3",
         "kafkajs": "^2.2.4",
         "pg-logical-replication": "^2.3.0",
@@ -20,6 +20,8 @@
     },
   },
   "packages": {
+    "@cascade/shared": ["@cascade/shared@file:../shared", { "dependencies": { "@opentelemetry/api": "^1.9.0", "@opentelemetry/exporter-metrics-otlp-http": "^0.208.0", "@opentelemetry/exporter-prometheus": "^0.208.0", "@opentelemetry/exporter-trace-otlp-http": "^0.208.0", "@opentelemetry/host-metrics": "^0.37.0", "@opentelemetry/sdk-node": "^0.208.0" }, "devDependencies": { "@types/bun": "latest" }, "peerDependencies": { "typescript": "^5.9.3" } }],
+
     "@grpc/grpc-js": ["@grpc/grpc-js@1.14.3", "", { "dependencies": { "@grpc/proto-loader": "^0.8.0", "@js-sdsl/ordered-map": "^4.4.2" } }, "sha512-Iq8QQQ/7X3Sac15oB6p0FmUg/klxQvXLeileoqrTRGJYLV+/9tubbr9ipz0GKHjmXVsgFPo/+W+2cA8eNcR+XA=="],
 
     "@grpc/proto-loader": ["@grpc/proto-loader@0.8.0", "", { "dependencies": { "lodash.camelcase": "^4.3.0", "long": "^5.0.0", "protobufjs": "^7.5.3", "yargs": "^17.7.2" }, "bin": { "proto-loader-gen-types": "build/bin/proto-loader-gen-types.js" } }, "sha512-rc1hOQtjIWGxcxpb9aHAfLpIctjEnsDehj0DAiVfBlmT84uvR0uUtN2hEi/ecvWVjXUGf5qPF4qEgiLOx1YIMQ=="],
@@ -103,8 +105,6 @@
     "@protobufjs/pool": ["@protobufjs/pool@1.1.0", "", {}, "sha512-0kELaGSIDBKvcgS4zkjz1PeddatrjYcmMWOlAuAPwAeccUrPHdUqo/J6LiymHHEiJT5NrF1UVwxY14f+fy4WQw=="],
 
     "@protobufjs/utf8": ["@protobufjs/utf8@1.1.0", "", {}, "sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw=="],
-
-    "@shardrouter/shared": ["@shardrouter/shared@file:../shared", { "dependencies": { "@opentelemetry/api": "^1.9.0", "@opentelemetry/exporter-metrics-otlp-http": "^0.208.0", "@opentelemetry/exporter-prometheus": "^0.208.0", "@opentelemetry/exporter-trace-otlp-http": "^0.208.0", "@opentelemetry/host-metrics": "^0.37.0", "@opentelemetry/sdk-node": "^0.208.0" }, "devDependencies": { "@types/bun": "latest" }, "peerDependencies": { "typescript": "^5.9.3" } }],
 
     "@types/bun": ["@types/bun@1.3.4", "", { "dependencies": { "bun-types": "1.3.4" } }, "sha512-EEPTKXHP+zKGPkhRLv+HI0UEX8/o+65hqARxLy8Ov5rIxMBPNTjeZww00CIihrIQGEQBYg+0roO5qOnS/7boGA=="],
 

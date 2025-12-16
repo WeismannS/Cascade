@@ -1,4 +1,4 @@
-name: cdc-shardrouter
+name: cascade
 
 services:  
     cdc : 
