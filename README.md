@@ -20,6 +20,11 @@ Cascade is a CDC (Change Data Capture) pipeline that replicates PostgreSQL chang
 - **shard-router/** - Consumes Kafka messages and applies to replicas
 - **shared/** - Common OpenTelemetry instrumentation
 
+## Features
+
+- **Scalable**: Spin up as many replica routers as you need
+- **Database Agnostic**: Replica databases can be any SQL database (MySQL, MariaDB, SQLite, etc.) as long as the value types are supported
+
 ## Quick Start
 
 The included `docker-compose.yml` provides a complete demo environment with:
