@@ -25,6 +25,10 @@ Cascade is a CDC (Change Data Capture) pipeline that replicates PostgreSQL chang
 - **Scalable**: Spin up as many replica routers as you need
 - **Database Agnostic**: Replica databases can be any SQL database (MySQL, MariaDB, SQLite, etc.) as long as the value types are supported
 
+## Prerequisites
+
+The primary PostgreSQL database must have the [wal2json](https://github.com/eulerto/wal2json) extension installed and logical replication enabled. See the `main-db/` directory for an example setup.
+
 ## Quick Start
 
 The included `docker-compose.yml` provides a complete demo environment with:
